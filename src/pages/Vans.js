@@ -1,35 +1,96 @@
-import { useEffect,useState } from "react"
-import { Link } from "react-router-dom"
+//a loader function fetches data and mounts before a component renders to avoid loading state and re-rendering
+//the loader function is expored same component that data is to be rendered and imported in route and taken as a function
+//fetched data is accessed using useloaderdata
+import { Link, useSearchParams, useLoaderData } from "react-router-dom"
+import { getVans } from "./Api"
+import { useState } from "react"
 
-
-const Vans = () => {
-  const[vans,setVans]=useState([])
-  useEffect(()=>{
-  fetch("/api/vans")
-  .then(res=>res.json())
-  .then(data=>setVans(data.vans))
-  },[])
-
-  const vanElements=vans.map(van=>(
-    <div className="text-gray-900 no-underline" key={van.id}>
-      <Link to={`/vans/${van.id}`}>
-      <img className="rounded-md max-w-full" src={van.imageUrl} alt="dump"/>
-      <div>
-        <h3>{van.name}</h3>
-        <p>${van.price}</p>
-      </div>
-      <i className="font-normal  h-8 px-6 py-1 border-none rounded-md bg-yellow-200 text-gray-700 transition-all duration-200
-      ease-cubic-bezier-0.2-0.1-1 hover:bg-yellow-200xe 1swwwCD BNRT`GX  tnr6hi">{van.type}</i>
-      </Link>
-    </div>
-  ))
-  return (
-   <div className="px-6">
-    <div className="grid justify-center gap-8 grid-cols-2 mt-14">
-      {vanElements}
-    </div>
-   </div>
-  )
+export function loader() {
+    return getVans()
 }
 
-export default Vans
+export default function Vans() {
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [error, setError] = useState(null)
+    const vans = useLoaderData()
+
+    const typeFilter = searchParams.get("type")
+
+    const displayedVans = typeFilter
+        ? vans.filter(van => van.type === typeFilter)
+        : vans
+
+    const vanElements = displayedVans.map(van => (
+        <div key={van.id} className="van-tile">
+            <Link
+                to={van.id}
+                state={{
+                    search: `?${searchParams.toString()}`,
+                    type: typeFilter
+                }}
+            >
+                <img alt={van.name} src={van.imageUrl} />
+                <div className="van-info">
+                    <h3>{van.name}</h3>
+                    <p>${van.price}<span>/day</span></p>
+                </div>
+                <i className={`van-type ${van.type} selected`}>{van.type}</i>
+            </Link>
+        </div>
+    ))
+
+    function handleFilterChange(key, value) {
+        setSearchParams(prevParams => {
+            if (value === null) {
+                prevParams.delete(key)
+            } else {
+                prevParams.set(key, value)
+            }
+            return prevParams
+        })
+    }
+    
+    if (error) {
+        return <h1>There was an error: {error.message}</h1>
+    }
+
+    return (
+        <div className="van-list-container">
+            <h1>Explore our van options</h1>
+            <div className="van-list-filter-buttons">
+                <button
+                    onClick={() => handleFilterChange("type", "simple")}
+                    className={
+                        `van-type simple 
+                        ${typeFilter === "simple" ? "selected" : ""}`
+                    }
+                >Simple</button>
+                <button
+                    onClick={() => handleFilterChange("type", "luxury")}
+                    className={
+                        `van-type luxury 
+                        ${typeFilter === "luxury" ? "selected" : ""}`
+                    }
+                >Luxury</button>
+                <button
+                    onClick={() => handleFilterChange("type", "rugged")}
+                    className={
+                        `van-type rugged 
+                        ${typeFilter === "rugged" ? "selected" : ""}`
+                    }
+                >Rugged</button>
+
+                {typeFilter ? (
+                    <button
+                        onClick={() => handleFilterChange("type", null)}
+                        className="van-type clear-filters"
+                    >Clear filter</button>
+                ) : null}
+
+            </div>
+            <div className="van-list">
+                {vanElements}
+            </div>
+        </div>
+    )
+}
