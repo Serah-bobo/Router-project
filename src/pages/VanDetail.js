@@ -1,20 +1,18 @@
 //uselocation is used to access current location of an object
 
+import { getVans } from "./Api"
 
-
-import { useParams,Link,useLocation } from "react-router-dom"
- import { useEffect,useState } from "react"
+import { Link,useLocation,useLoaderData } from "react-router-dom"
+ 
+ export function Loader({params}){
+return getVans(params.id)
+ }
  const VanDetail = () => {
-    const params=useParams()
+    
     const location=useLocation();
-    console.log(location)
-const[van,setVan]=useState(null)
+    const van=useLoaderData()
 
-    useEffect(()=>{
-        fetch(`/api/vans/${params.id}`)
-        .then(res=>res.json())
-        .then(data=>setVan(data.vans))
-        },[params.id])
+    
 const search=location.state?.search||''
 const type=location.state?.type||''
    return (
@@ -24,7 +22,7 @@ const type=location.state?.type||''
                 relative="path"
                 className="back-button"
             >&larr; <span>Back {type}to all vans</span></Link>
-        {van?(
+        
             <div className='flex flex-col text-gray-900'>
                 <img  className="border rounded-md my-12" src={van.imageUrl} alt="detail"/>
                 <i className="self-start">{van.type}</i>
@@ -33,9 +31,7 @@ const type=location.state?.type||''
                 <p>{van.description}</p>
                 <button>Rent this van</button>
             </div>
-        ):
-        <h2>loading...</h2>
-        }
+       
      </div>
    )
  }

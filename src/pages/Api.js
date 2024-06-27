@@ -1,13 +1,39 @@
-export async function getVans() {
-    const res = await fetch("/api/vans")
-    if (!res.ok) {
-        // eslint-disable-next-line no-throw-literal
-        throw {
-            message: "Failed to fetch vans", 
-            statusText: res.statusText,
-            status: res.status
-        }
+export async function getVans(id) {
+    try{
+        const url = id ? `/api/vans/${id}` : "/api/vans"
+        const res = await fetch(url)
+   if(!res.ok){
+    throw new Error('failed to fetch',{
+        status:res.status,
+        statusText:res.statusText,
+    })
+   }
+   const data = await res.json()
+   return data.vans
     }
-    const data = await res.json()
-    return data.vans
+    catch(error){
+        console.error('fetch error:', error);
+        throw error;
+    }
+}
+
+
+
+export async function getHostVans(id){
+    try{
+        const url =id ? `/api/host/vans/${id}` : "/api/host/vans"
+        const res = await fetch(url)
+   if(!res.ok){
+    throw new Error('failed to fetch',{
+        status:res.status,
+        statusText:res.statusText,
+    })
+   }
+   const data = await res.json()
+   return data.vans
+    }
+    catch(error){
+        console.error('fetch error:', error);
+        throw error;
+    } 
 }

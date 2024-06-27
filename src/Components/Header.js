@@ -24,7 +24,15 @@ const Header = () => {
       className="font-semibold text-gray-700 no-underline px-4 py-1 hover:text-gray-800 hover:underline cursor-pointer"
        to={'/vans'}
        style={({isActive})=>isActive? activeStyle:null}
-       >Vans</NavLink>
+       >Vans</NavLink> 
+       <Link to="login" className="login-link">
+       <img 
+           src="../assets/images/avatar-icon.png" 
+           alt="now"
+           className="login-icon"
+       />
+   </Link>
+
       </nav>
     </header>
   )
