@@ -1,41 +1,49 @@
-import {Link, NavLink } from "react-router-dom"
 
-const Header = () => {
-    const activeStyle={
-        fontWeight:'bold',
-        textdecoration:'underline',
-        color:'red'
+import React from "react"
+import { Link, NavLink } from "react-router-dom"
+
+export default function Header() {
+    const activeStyles = {
+        fontWeight: "bold",
+        textDecoration: "underline",
+        color: "#161616"
     }
-  return (
-    <header className="flex h-28 p-4 items-center">
-      <Link className="mr-auto font-bold text-black uppercase text-2xl" to={'/'}>#VANLIFE</Link>
-      <nav className="flex">
-        <NavLink 
-        className="font-semibold text-gray-700 no-underline px-4 py-1 hover:text-gray-800 hover:underline cursor-pointer" 
-        to= {'/host'}
-        style={({isActive})=>isActive? activeStyle:null}
-        >Host</NavLink>
-      <NavLink 
-      className="font-semibold text-gray-700 no-underline px-4 py-1 hover:text-gray-800 hover:underline cursor-pointer" 
-      to={'/about'}
-      style={({isActive})=>isActive? activeStyle:null}
-      >About</NavLink>
-      <NavLink 
-      className="font-semibold text-gray-700 no-underline px-4 py-1 hover:text-gray-800 hover:underline cursor-pointer"
-       to={'/vans'}
-       style={({isActive})=>isActive? activeStyle:null}
-       >Vans</NavLink> 
-       <Link to="login" className="login-link">
-       <img 
-           src="../assets/images/avatar-icon.png" 
-           alt="now"
-           className="login-icon"
-       />
-   </Link>
-
-      </nav>
-    </header>
-  )
+    
+    function fakeLogOut() {
+        localStorage.removeItem("loggedin")
+    }
+    
+    return (
+        <header>
+            <Link className="site-logo" to="/">#VanLife</Link>
+            <nav>
+                <NavLink 
+                    to="host"
+                    style={({isActive}) => isActive ? activeStyles : null}
+                >
+                    Host
+                </NavLink>
+                <NavLink 
+                    to="about"
+                    style={({isActive}) => isActive ? activeStyles : null}
+                >
+                    About
+                </NavLink>
+                <NavLink 
+                    to="vans"
+                    style={({isActive}) => isActive ? activeStyles : null}
+                >
+                    Vans
+                </NavLink>
+                <Link to="login" className="login-link">
+                    <img 
+                        src="../assets/images/avatar-icon.png" 
+                        className="login-icon"
+                        alt="dump"
+                    />
+                </Link>
+                <button onClick={fakeLogOut}>X</button>
+            </nav>
+        </header>
+    )
 }
-
-export default Header

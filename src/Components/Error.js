@@ -1,13 +1,13 @@
-//userouteerror is used to access the error thrown during route loading process.handle and display errors
+import React from "react"
 import { useRouteError } from "react-router-dom"
-const Error = () => {
-  const error=useRouteError()
-  return (
-    <div>
-        <h1>Error:{error.message}</h1>
-        <p>{error.status}-{error.statusText}</p>
-    </div>
-  )
-}
 
-export default Error
+export default function Error() {
+    const error = useRouteError()
+    
+    return (
+        <>
+        <h1>Error: {error.message}</h1>
+        <pre>{error.status} - {error.statusText}</pre>
+        </>
+    )
+}
