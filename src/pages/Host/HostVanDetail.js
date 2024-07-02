@@ -1,13 +1,15 @@
 import React from "react"
-import { Link, NavLink, Outlet , useLoaderData} from "react-router-dom"
+import {  Link, NavLink, Outlet, useLoaderData } from "react-router-dom"
 import { getHostVans } from "../Api"
 import { requireAuth } from "../../Components/Utilies"
-export  async function Loader({params,request}){
-    await requireAuth({request})
+
+export async function Loader({ params, request }) {
+    await requireAuth(request)
     return getHostVans(params.id)
 }
+
 export default function HostVanDetail() {
-  const currentVan=useLoaderData()
+    const currentVan = useLoaderData()
 
     const activeStyles = {
         fontWeight: "bold",
@@ -15,9 +17,6 @@ export default function HostVanDetail() {
         color: "#161616"
     }
 
-   
-
-    
     return (
         <section>
             <Link
@@ -28,7 +27,7 @@ export default function HostVanDetail() {
 
             <div className="host-van-detail-layout-container">
                 <div className="host-van-detail">
-                    <img src={currentVan.imageUrl} alt="dump" />
+                    <img src={currentVan.imageUrl}  alt="dump"/>
                     <div className="host-van-detail-info-text">
                         <i
                             className={`van-type van-type-${currentVan.type}`}
@@ -66,12 +65,3 @@ export default function HostVanDetail() {
         </section>
     )
 }
-
-/**
- * Challenge: check out the docs linked in the slide, and see if you
- * can implement the Outlet Context feature it talks about.
- * 
- * Part of this challenge will require you to (finally) build out those
- * nested components. Again, if you don't need CSS practice, you can
- * skip the styling part, and I'll handle that for you.
- */

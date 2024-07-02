@@ -1,39 +1,37 @@
-//uselocation is used to access current location of an object
-
+import React from "react"
+import { Link,  useLocation, useLoaderData } from "react-router-dom"
 import { getVans } from "./Api"
 
-import { Link,useLocation,useLoaderData } from "react-router-dom"
- 
- export function Loader({params}){
-return getVans(params.id)
- }
- const VanDetail = () => {
-    
-    const location=useLocation();
-    const van=useLoaderData()
+export function Loader({ params }) {
+    return getVans(params.id)
+}
 
-    
-const search=location.state?.search||''
-const type=location.state?.type||''
-   return (
-     <div className="px-7">
-         <Link
+export default function VanDetail() {
+    const location = useLocation()
+    const van = useLoaderData()
+
+    const search = location.state?.search || "";
+    const type = location.state?.type || "all";
+
+    return (
+        <div className="van-detail-container">
+            <Link
                 to={`..${search}`}
                 relative="path"
                 className="back-button"
-            >&larr; <span>Back {type}to all vans</span></Link>
-        
-            <div className='flex flex-col text-gray-900'>
-                <img  className="border rounded-md my-12" src={van.imageUrl} alt="detail"/>
-                <i className="self-start">{van.type}</i>
-                <h2 className='mb-3 text-2xl'>{van.name}</h2>
-                <p className="mb-3 text-sm">${van.price}</p>
-                <p>{van.description}</p>
-                <button>Rent this van</button>
-            </div>
-       
-     </div>
-   )
- }
+            >&larr; <span>Back to {type} vans</span></Link>
 
- export default VanDetail
+            <div className="van-detail">
+                <img alt={van.name} src={van.imageUrl} />
+                <i className={`van-type ${van.type} selected`}>
+                    {van.type}
+                </i>
+                <h2>{van.name}</h2>
+                <p className="van-price"><span>${van.price}</span>/day</p>
+                <p>{van.description}</p>
+                <button className="link-button">Rent this van</button>
+            </div>
+
+        </div>
+    )
+}

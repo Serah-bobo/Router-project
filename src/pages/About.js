@@ -1,24 +1,19 @@
 
+import { Link } from "react-router-dom"
 
-const About = () => {
-  return (
-    <div>
-        <img src="img\about-hero.png" alt="about " 
-        className="max-w-full "
-        />
-        <div className=" text-gray-900 px-6 mb-12">
-            <h1 className="leading-9">Don't squeeze in a sedan when you could relax in a van.</h1>
-            <p className="leading-6">Our mission  is to enliven your road tripwith the perfect travel van rental.
-                Our vans are recertified before each trip to ensure your travel plans
-                can go off without a hitch. (Hitch costs extra 😊)
-            </p>
-            <p className="leading-6">Our team is full of van life enthusiasists who knows firsthand the magic of touring the world on 4 heels</p>
+export default function About() {
+    return (
+        <div className="about-page-container">
+            <img src="img\about-hero.png" className="about-hero-image" alt="dump" />
+            <div className="about-page-content">
+                <h1>Don’t squeeze in a sedan when you could relax in a van.</h1>
+                <p>Our mission is to enliven your road trip with the perfect travel van rental. Our vans are recertified before each trip to ensure your travel plans can go off without a hitch. (Hitch costs extra 😉)</p>
+                <p>Our team is full of vanlife enthusiasts who know firsthand the magic of touring the world on 4 wheels.</p>
+            </div>
+            <div className="about-page-cta">
+                <h2>Your destination is waiting.<br />Your van is ready.</h2>
+                <Link className="link-button" to="/vans">Explore our vans</Link>
+            </div>
         </div>
-        <div className="bg-pink-100 px-8 pb-8 mx-7 rounded-md text-gray-900 ">
-            <h2 className="m-0 p-9">Yout destination is waiting. <br/></h2>
-        </div>
-    </div>
-  )
+    );
 }
-
-export default About

@@ -1,56 +1,50 @@
+import React from "react"
+import { Link, useLoaderData, defer, Await } from "react-router-dom"
 import { getHostVans } from "../Api"
-import { Link,useLoaderData,defer,Await } from "react-router-dom"
 import { requireAuth } from "../../Components/Utilies"
-import { Suspense } from "react"
-export async function Loader({request}){
-    await requireAuth({request})
-    return defer ({vans:getHostVans()})
-}
-const HostVans = () => {
-    const dataPromise=useLoaderData();
 
-    const renderVans=(vans)=>{
-        const hostVansEls=vans.map(van=>(
+export async function Loader({ request }) {
+    await requireAuth(request)
+    return defer({ vans: getHostVans() })
+}
+
+export default function HostVans() {
+    const dataPromise = useLoaderData()
+
+    function renderVanElements(vans) {
+        const hostVansEls = vans.map(van => (
             <Link
-            to={van.id}
-            key={van.id}>
-                <div 
-                key={van.id}>
-                <img src={van.imageUrl} alt="dump"/>
-                <div>
-                    <h2>{van.name}</h2>
-                    <p>${van.price}</p>
+                to={van.id}
+                key={van.id}
+                className="host-van-link-wrapper"
+            >
+                <div className="host-van-single" key={van.id}>
+                    <img src={van.imageUrl} alt="dump"/>
+                    <div className="host-van-info">
+                        <h3>{van.name}</h3>
+                        <p>${van.price}/day</p>
+                    </div>
                 </div>
-                
-    
-                </div>
-               
             </Link>
         ))
-        return(
-            <div>
-       
-            <section>
-                {hostVansEls}
-            </section>
-        
-    </div>
+        return (
+            <div className="host-vans-list">
+                <section>
+                    {hostVansEls}
+                </section>
+            </div>
         )
     }
-    
-   
-  return (
-   <section>
-    <h1>Your listed Vans</h1>
-    <Suspense fallback={<h2>Loading vans...</h2>}>
-    <Await resolve={dataPromise.vans}>
-    {renderVans}
-    </Await>
-    </Suspense>
-    
-    
-   </section>
-  )
-}
 
-export default HostVans
+
+    return (
+        <section>
+            <h1 className="host-vans-title">Your listed vans</h1>
+            <React.Suspense fallback={<h2>Loading vans...</h2>}>
+                <Await resolve={dataPromise.vans}>
+                    {renderVanElements}
+                </Await>
+            </React.Suspense>
+        </section>
+    )
+}

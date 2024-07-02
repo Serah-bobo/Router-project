@@ -18,9 +18,10 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Vans, {loader as VansLoader} from  "./pages/Vans";
 import "./Server"
+import "./Styles.css"
 import VanDetail,  {Loader as vanDetailsLoader}from "./pages/VanDetail";
 import Layout from "./Components/Layout";
-import Dashboard from "./Components/Dashboard";
+import Dashboard , {loader as dashboardLoader} from "./pages/Host/Dashboard";
 import Income from "./pages/Host/Income";
 import Review from "./pages/Host/Review";
 import Hostlayout from "./Components/Hostlayout";
@@ -61,7 +62,7 @@ const App = () => {
       <Route 
       index 
       element={<Dashboard />} 
-      loader={async({request})=>await requireAuth({request})}
+      loader={dashboardLoader}
       />
       <Route 
       path="income" 
